@@ -10,7 +10,7 @@ import os
 from six.moves import cPickle
 import sys
 sys.path.append("../captioning")
-
+print(os.listdir('..'))
 print(os.listdir('../captioning'))
 
 import captioning.utils.opts as opts
