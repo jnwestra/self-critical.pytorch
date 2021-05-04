@@ -30,8 +30,7 @@ class CaptionModel(nn.Module):
         mode = kwargs.get('mode', 'forward')
         if 'mode' in kwargs:
             del kwargs['mode']
-        return getattr(self, '_'+mode)(**kwargs, *args)
-#         return getattr(self, '_'+mode)(*args, **kwargs)
+        return getattr(self, '_'+mode)(*args, **kwargs)
 
     def beam_search(self, init_state, init_logprobs, *args, **kwargs):
 
