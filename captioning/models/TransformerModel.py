@@ -344,7 +344,7 @@ class TransformerModel(AttModel):
 
         out = self.model(att_feats, seq, att_masks, seq_mask)
         
-        out_encoder = self.model(att_feats, att_masks)
+        out_encoder = self.model.encode(att_feats, att_masks)
 
         outputs = self.model.generator(out)
         return outputs, out_encoder
