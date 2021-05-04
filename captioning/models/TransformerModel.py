@@ -263,6 +263,7 @@ class TransformerModel(AttModel):
     def __init__(self, opt):
         super(TransformerModel, self).__init__(opt)
         self.opt = opt
+        print("TransformerModel init")
         # self.config = yaml.load(open(opt.config_file))
         
         self.N_enc = getattr(opt, 'N_enc', opt.num_layers)
