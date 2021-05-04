@@ -59,6 +59,7 @@ def setup(opt):
         if getattr(opt, 'cached_transformer', False):
             model = cachedTransformer(opt)
         else:
+            print("TransformerModel")
             model = TransformerModel(opt)
     # AoANet
     elif opt.caption_model == 'aoa':
