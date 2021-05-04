@@ -169,6 +169,9 @@ def eval_split(model, crit, loader, eval_kwargs={}):
             tmp_eval_kwargs = eval_kwargs.copy()
             tmp_eval_kwargs.update({'sample_n': 1})
             outputs, out_encoder = model(fc_feats, att_feats, att_masks, opt=tmp_eval_kwargs, mode='sample')
+            
+            print(outputs.shape, out_encoder.shape)
+
             seq, seq_logprobs = outputs
             seq = seq.data
             entropy = - (F.softmax(seq_logprobs, dim=2) * seq_logprobs).sum(2).sum(1) / ((seq>0).to(seq_logprobs).sum(1)+1)
