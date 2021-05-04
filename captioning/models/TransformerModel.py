@@ -343,9 +343,11 @@ class TransformerModel(AttModel):
         att_feats, seq, att_masks, seq_mask = self._prepare_feature_forward(att_feats, att_masks, seq)
 
         out = self.model(att_feats, seq, att_masks, seq_mask)
+        
+        out_encoder = self.model(att_feats, att_masks)
 
         outputs = self.model.generator(out)
-        return outputs
+        return outputs, out_encoder
         # return torch.cat([_.unsqueeze(1) for _ in outputs], 1)
 
     def core(self, it, fc_feats_ph, att_feats_ph, memory, state, mask):
