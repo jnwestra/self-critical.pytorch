@@ -18,6 +18,7 @@ from .M2Transformer import M2TransformerModel
 from .AoAModel import AoAModel
 
 def setup(opt):
+    print("opt.caption_model", opt.caption_model)
     if opt.caption_model in ['fc', 'show_tell']:
         print('Warning: %s model is mostly deprecated; many new features are not supported.' %opt.caption_model)
         if opt.caption_model == 'fc':
