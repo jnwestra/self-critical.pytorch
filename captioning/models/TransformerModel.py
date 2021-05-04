@@ -341,6 +341,12 @@ class TransformerModel(AttModel):
             seq_mask = None
 
         return att_feats, seq, att_masks, seq_mask
+    
+    def encode(self, att_feats, att_masks, seq):
+        att_feats, seq, att_masks, seq_mask = self._prepare_feature_forward(att_feats, att_masks, seq)
+        out_encode = self.model.encode(att_feats, att_masks)
+        
+        return out_encode
 
     def _forward(self, fc_feats, att_feats, seq, att_masks=None):
         print("_forward")
