@@ -239,6 +239,7 @@ class TransformerModel(AttModel):
     def make_model(self, src_vocab, tgt_vocab, N_enc=6, N_dec=6, 
                d_model=512, d_ff=2048, h=8, dropout=0.1):
         "Helper: Construct a model from hyperparameters."
+        print("make_model")
         c = copy.deepcopy
         attn = MultiHeadedAttention(h, d_model, dropout)
         ff = PositionwiseFeedForward(d_model, d_ff, dropout)
@@ -303,6 +304,7 @@ class TransformerModel(AttModel):
         return []
 
     def _prepare_feature(self, fc_feats, att_feats, att_masks):
+        print("_prepare_feature")
 
         att_feats, seq, att_masks, seq_mask = self._prepare_feature_forward(att_feats, att_masks)
         memory = self.model.encode(att_feats, att_masks)
@@ -310,6 +312,7 @@ class TransformerModel(AttModel):
         return fc_feats[...,:0], att_feats[...,:0], memory, att_masks
 
     def _prepare_feature_forward(self, att_feats, att_masks=None, seq=None):
+        print("_prepare_feature_forward")
         att_feats, att_masks = self.clip_att(att_feats, att_masks)
 
         att_feats = pack_wrapper(self.att_embed, att_feats, att_masks)
@@ -338,6 +341,7 @@ class TransformerModel(AttModel):
         return att_feats, seq, att_masks, seq_mask
 
     def _forward(self, fc_feats, att_feats, seq, att_masks=None):
+        print("_forward")
         if seq.ndim == 3:  # B * seq_per_img * seq_len
             seq = seq.reshape(-1, seq.shape[2])
         att_feats, seq, att_masks, seq_mask = self._prepare_feature_forward(att_feats, att_masks, seq)
