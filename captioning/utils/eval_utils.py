@@ -150,6 +150,7 @@ def eval_split(model, crit, loader, eval_kwargs={}):
     loss_evals = 1e-8
     predictions = []
     n_predictions = [] # when sample_n > 1
+    cap_enc_list = []
     while True:
         data = loader.get_batch(split)
         n = n + len(data['infos'])
@@ -174,6 +175,7 @@ def eval_split(model, crit, loader, eval_kwargs={}):
             
             seq = seq.data
             print(seq.shape, seq_logprobs.shape, out_encoder.shape)
+            cap_enc_list.extend(out_encoder)
             
             entropy = - (F.softmax(seq_logprobs, dim=2) * seq_logprobs).sum(2).sum(1) / ((seq>0).to(seq_logprobs).sum(1)+1)
             perplexity = - seq_logprobs.gather(2, seq.unsqueeze(2)).squeeze(2).sum(1) / ((seq>0).to(seq_logprobs).sum(1)+1)
@@ -228,7 +230,7 @@ def eval_split(model, crit, loader, eval_kwargs={}):
 
     # Switch back to training mode
     model.train()
-    return loss_sum/loss_evals, predictions, lang_stats, out_encoder
+    return loss_sum/loss_evals, predictions, lang_stats, cap_enc_list
 
 
 # Only run when sample_n > 0
