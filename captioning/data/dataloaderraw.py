@@ -47,34 +47,38 @@ class DataLoaderRaw():
         self.files = []
         self.ids = []
 
-        print(len(self.coco_json))
-        if len(self.coco_json) > 0:
-            print('reading from ' + opt.coco_json)
-            # read in filenames from the coco-style json file
-            self.coco_annotation = json.load(open(self.coco_json))
-            for k,v in enumerate(self.coco_annotation['images']):
-                fullpath = os.path.join(self.folder_path, v['file_name'])
-                self.files.append(fullpath)
-                self.ids.append(v['id'])
-        else:
-            # read in all the filenames from the folder
-            print('listing all images in directory ' + self.folder_path)
-            def isImage(f):
-                supportedExt = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.ppm','.PPM']
-                for ext in supportedExt:
-                    start_idx = f.rfind(ext)
-                    if start_idx >= 0 and start_idx + len(ext) == len(f):
-                        return True
-                return False
 
-            n = 1
-            for root, dirs, files in os.walk(self.folder_path, topdown=False):
-                for file in files:
-                    fullpath = os.path.join(self.folder_path, file)
-                    if isImage(fullpath):
-                        self.files.append(fullpath)
-                        self.ids.append(str(n)) # just order them sequentially
-                        n = n + 1
+
+        # read in all the filenames from the folder
+        print('listing all images in directory ' + self.folder_path)
+        def isImage(f):
+            supportedExt = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.ppm','.PPM']
+            for ext in supportedExt:
+                start_idx = f.rfind(ext)
+                if start_idx >= 0 and start_idx + len(ext) == len(f):
+                    return True
+            return False
+
+        file_dict = {}
+        for file in os.listdir(self.folder_path):
+            fullpath = os.path.join(self.folder_path, file)
+            if isImage(fullpath):
+                art_idx = int(file.split('_')[0])
+                if file_dict[art_idx] is None:
+                    file_dict[art_idx] = []
+                file_dict[art_idx].append(fullpath)
+
+        idx_list = []
+        for art_idx in idx_dict.keys():
+            idx_list.append(art_idx)
+        idx_list.sort()
+
+        n = 1
+        for idx in idx_list:
+            for fname in file_dict[idx]:
+                self.files.append(fname)
+                self.ids.append(n)
+                n=n+1
 
         self.N = len(self.files)
         print('DataLoaderRaw found ', self.N, ' images')
