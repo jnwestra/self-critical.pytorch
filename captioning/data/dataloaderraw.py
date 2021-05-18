@@ -47,8 +47,6 @@ class DataLoaderRaw():
         self.files = []
         self.ids = []
 
-
-
         # read in all the filenames from the folder
         print('listing all images in directory ' + self.folder_path)
         def isImage(f):
@@ -59,19 +57,23 @@ class DataLoaderRaw():
                     return True
             return False
 
-        file_dict = {}
+        file_list = []
+        idx_list = []
         for file in os.listdir(self.folder_path):
             fullpath = os.path.join(self.folder_path, file)
             if isImage(fullpath):
-                art_idx = int(file.split('_')[0])
-                if file_dict[art_idx] is None:
-                    file_dict[art_idx] = []
-                file_dict[art_idx].append(fullpath)
+                idx = int(file.split('_')[0])
+                file_list.append(file)
+                idx_list.append(idx)
 
-        idx_list = []
-        for art_idx in idx_dict.keys():
-            idx_list.append(art_idx)
         idx_list.sort()
+        idx_set = set(idx_list)
+
+        file_dict = {idx:[] for idx in idx_set}
+
+        for file in file_list:
+            idx = int(file.split('_')[0])
+            file_dict[idx].append(os.path.join(self.folder_path,file))
 
         n = 1
         for idx in idx_list:
