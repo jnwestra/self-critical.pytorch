@@ -76,7 +76,7 @@ class DataLoaderRaw():
             file_dict[idx].append(os.path.join(self.folder_path,file))
 
         n = 1
-        for idx in idx_list:
+        for idx in file_dict.keys():
             for fname in file_dict[idx]:
                 self.files.append(fname)
                 self.ids.append(n)
