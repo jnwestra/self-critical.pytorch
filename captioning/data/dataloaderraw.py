@@ -66,10 +66,10 @@ class DataLoaderRaw():
                 file_list.append(file)
                 idx_list.append(idx)
 
+        idx_list = list(set(idx_list))
         idx_list.sort()
-        idx_set = set(idx_list)
 
-        file_dict = {idx:[] for idx in idx_set}
+        file_dict = {idx:[] for idx in idx_list}
 
         for file in file_list:
             idx = int(file.split('_')[0])
